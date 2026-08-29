@@ -1,0 +1,29 @@
+# Dataset dan video
+dataset/
+output/
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Model dan checkpoint besar
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Environment dan credentials
+.env
+*.key
+credentials.json
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
