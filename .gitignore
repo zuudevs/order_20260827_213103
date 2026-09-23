@@ -11,6 +11,7 @@ output/
 *.pth
 *.ckpt
 *.onnx
+*.pdf
 
 # Python
 __pycache__/
