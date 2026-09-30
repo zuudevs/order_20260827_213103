@@ -2,8 +2,8 @@
 
 **Status:** `In Progress` \
 **Current Stage:** Stage 1 — Training until watermark readable \
-**Current Blocker:** Uji A belum memenuhi target \
-**Progress keseluruhan:** **8%**
+**Current Blocker:** Uji A belum memenuhi target setelah diagnostic dan ablasi Uji A selesai dieksekusi \
+**Progress keseluruhan:** **25%**
 
 > **Aturan utama:** Tahap berikutnya tidak boleh dimulai sebelum kriteria tahap sebelumnya terpenuhi. Setiap eksperimen harus menyimpan log, CSV, dan grafik dengan nama yang jelas. Eksperimen yang terhenti karena resource/time limit dicatat sebagai **INCOMPLETE**, bukan dianggap PASS/FAIL.
 
@@ -13,16 +13,14 @@
 
 | Stage                                       | Status         | Progress |
 | ------------------------------------------- | -------------- | -------: |
-| Stage 1 — Training until watermark readable | In Progress |      33% |
+| Stage 1 — Training until watermark readable | In Progress |      100%* |
 | Stage 2 — Research claim strengthening      | Blocked      |       0% |
 | Stage 3 — Standard evaluation               | Blocked      |       0% |
 | Stage 4 — Verifier system                   | Blocked      |       0% |
 | Stage 5 — Writing                           | Blocked      |       0% |
 | **Overall**                                 | In Progress |   **8%** |
 
-Progress keseluruhan dihitung berdasarkan 4 stage eksperimen utama dengan bobot sama. Stage 1 saat ini baru menyelesaikan 1 dari 3 diagnostic utama:
-
-`1 / 3 × 25% ≈ 8%`
+Progress keseluruhan dihitung berdasarkan 4 stage eksperimen utama dengan bobot sama. Seluruh diagnostic A/B/C dan investigasi latent yang menjadi fokus blocker sudah dieksekusi. Progress 25% adalah progress pekerjaan yang telah dieksekusi, **bukan kelulusan gate**. Gate Stage 1 tetap 0%.
 
 ---
 
@@ -74,15 +72,7 @@ Validation:
 
 **Status:** ❌ Gate belum terpenuhi.
 
-A0 saat ini:
-
-`0.6294 < 0.98`
-
-A0 → A1:
-
-`0.6294 → 0.6289`
-
-Sehingga rounding belum terlihat sebagai sumber masalah utama.
+Hasil checkpoint 6.000 step: A0 raw=0.8605, A0 id_crc=0.8618, A1 raw=0.8601, A1 id_crc=0.8625; control id_crc A0/A1=0.5011/0.5023. Target >0.98 belum tercapai. Selisih A0→A1 untuk id_crc adalah +0.0007, sehingga rounding bukan indikasi masalah dominan pada run ini. Tiga ablasi latent langsung 6.000 step juga selesai: abl_lambda_delta0=0.8175, abl_lr3e-4=0.8393, abl_init1e-2=0.8595; tidak ada yang mencapai >0.98.
 
 ---
 
@@ -544,7 +534,7 @@ Interpretasi yang didukung hasil saat ini:
 * Model sudah menangkap sebagian signal watermark karena accuracy watermark ≈0.63, sementara control ≈0.49.
 * Namun kemampuan ekstraksi masih jauh dari acceptance criterion.
 * A0 dan A1 hampir sama (`0.6294` vs `0.6289`), sehingga rounding bukan indikasi utama sumber masalah.
-* Diagnostic Level 2 belum selesai karena resource/time limit dan harus dicatat sebagai **INCOMPLETE**.
+* Diagnostic Level 2 sekarang **COMPLETE**: latent_float 0.530, video_no_round 0.510, video_round_ste 0.545. Tiga ablasi latent langsung juga COMPLETE pada 6.000 step.
 
 **Jangan lanjut ke HEVC / AV1 / verifier sebelum Stage 1 gate terpenuhi.**
 
@@ -554,9 +544,9 @@ Interpretasi yang didukung hasil saat ini:
 
 Prioritas berikutnya:
 
-1. **Lanjutkan investigasi Uji A.**
-2. Cari penyebab A0 berhenti sekitar 0.63.
-3. Jalankan eksperimen yang masih berada pada level latent/direct extraction.
+1. **Lanjutkan investigasi Uji A pada level latent/direct extraction.**
+2. Gunakan hasil ablasi sebagai evidence; varian init sekitar 1e-2 memberi evaluasi tertinggi sekitar 0.8595, tetapi masih di bawah gate.
+3. Fokus berikutnya pada penyebab ceiling sekitar 0.86 tanpa masuk codec robustness.
 4. Targetkan:
 
 ```text
@@ -589,10 +579,9 @@ Implementation Verification = PASS
 Latest training:
 
 ```text
-Steps = 1,500
-Training time ≈ 50.7 minutes
-A0 = 0.6294
-A1 = 0.6289
+Steps = 6,000
+A0 = 0.8618 (id_crc)
+A1 = 0.8625 (id_crc)
 ```
 
 Current project state:
@@ -607,3 +596,67 @@ Current project state:
 | Stage 4 | 0% |
 | Stage 5 | 0% |
 | **Overall** | 8% |
+
+---
+
+# Timeline — Update Terbaru (30 September 2026)
+
+## 01:35–01:38 UTC — Diagnostic Level 2 COMPLETE
+
+| Mode | Bit Accuracy | Status |
+|---|---:|---|
+| latent_float | 0.530 | COMPLETE |
+| video_no_round | 0.510 | COMPLETE |
+| video_round_ste | 0.545 | COMPLETE |
+
+Ketiga mode selesai 400/400 step. Tidak ada yang mendekati gate.
+
+## 01:38–01:42 UTC — Uji A/B/C Diagnostic COMPLETE
+
+| Eksperimen | Konfigurasi | Bit Accuracy | Target | Status |
+|---|---|---:|---:|---|
+| Uji A | 16×1 | 0.5390 | >0.98 | FAIL |
+| Uji B | 16×1 | 0.5479 | >0.95 | FAIL |
+| Uji A (2×8) | 2×8 | 0.4973 | >0.98 | FAIL |
+| Uji C | 2×8 | 0.5008 | >0.95 | FAIL |
+
+Run ini 600 step dan dicatat sebagai diagnostic evidence, bukan final gate evidence.
+
+## 01:56 UTC — Uji A 6.000 Step COMPLETE
+
+| Payload | A0 | A1 |
+|---|---:|---:|
+| raw | 0.8605 | 0.8601 |
+| id_crc | **0.8618** | **0.8625** |
+| control id_crc | 0.5011 | 0.5023 |
+
+Dibanding hasil sebelumnya id_crc A0=0.6294, hasil terbaru menjadi 0.8618 (+0.2324). Gate >0.98 masih belum tercapai.
+
+## 02:01–02:11 UTC — Ablasi Uji A COMPLETE
+
+| Eksperimen | Parameter | Evaluasi |
+|---|---|---:|
+| abl_lambda_delta0 | lambda_delta = 0 | 0.8175 |
+| abl_lr3e-4 | LR = 3e-4 | 0.8393 |
+| abl_init1e-2 | init layer akhir ≈ 1e-2 | **0.8595** |
+
+Semua run selesai 6.000/6.000 step. Tidak ada varian yang mencapai >0.98.
+
+## Status Progress Terbaru
+
+| Komponen | Progress | Status |
+|---|---:|---|
+| Implementation verification | 100% | PASS |
+| Diagnostic execution | 100% | COMPLETE |
+| Stage 1 gate | 0% | NOT PASSED |
+| Stage 2 | 0% | BLOCKED |
+| Stage 3 | 0% | BLOCKED |
+| Stage 4 | 0% | BLOCKED |
+| Stage 5 | 0% | BLOCKED |
+| **Overall stage-based progress** | **25%** | IN PROGRESS |
+
+25% adalah progress pekerjaan yang telah dieksekusi, bukan persentase keberhasilan model. Stage 1 tetap belum lulus.
+
+## Keputusan Terbaru
+
+Fokus tetap pada **latent/direct extraction**. Codec robustness, HEVC, AV1, dan tahap berikutnya belum dibuka. Hasil ablasi menjadi evidence pembanding untuk eksperimen berikutnya; belum ada varian yang memenuhi gate >0.98.
