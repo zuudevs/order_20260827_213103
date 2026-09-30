@@ -688,3 +688,78 @@ Angka 25% menunjukkan pekerjaan yang sudah dieksekusi, bukan keberhasilan model.
 ## Next Step
 
 Tetap fokus pada **Uji A / latent-direct extraction** untuk mencari penyebab ceiling sekitar 0.86. Jangan membuka codec robustness, HEVC, AV1, atau Stage 2 sebelum gate Stage 1 terpenuhi.
+---
+# Timeline Update — 30 September 2026 — Run Terbaru
+
+Sumber bukti: notebook yang diunggah **watermark_latent_neural_codec_v3_stage1_fixed (2).ipynb**. Tidak ada commit SHA yang dicantumkan karena hasil ini berasal dari file notebook yang diunggah, sehingga tidak diasumsikan berasal dari commit tertentu.
+
+## Diagnostic Level 2
+
+Ketiga eksperimen tersimpan sebagai **COMPLETE 400/400 step**:
+
+| Mode | Bit Accuracy | Status |
+|---|---:|---|
+| latent_float | 0.530 | COMPLETE |
+| video_no_round | 0.510 | COMPLETE |
+| video_round_ste | 0.545 | COMPLETE |
+
+Hasil ini merupakan diagnostic dan bukan gate Stage 1.
+
+## Uji A — Run 30.000 Step
+
+Run stage1_diag_A selesai **30.000/30.000 step**. Bukti diversity dari run tersebut:
+
+- minimum unique payloads per step = **16**
+- maksimum frame per payload = **1**
+- jumlah step = **30.000**
+
+Validasi pada **448 frame**:
+
+| Payload | Experiment | Round | Bit Accuracy | Exact Match | ID Accuracy | CRC Accuracy |
+|---|---|---|---:|---:|---:|---:|
+| raw | A0 | No | 0.9993 | 0.9665 | 0.9994 | 0.9990 |
+| raw | A1 | Yes | 0.9992 | 0.9643 | 0.9992 | 0.9992 |
+| raw CTRL | CTRL | No | 0.4990 | 0.0000 | 0.5026 | 0.4919 |
+| raw CTRL | CTRL | Yes | 0.5021 | 0.0000 | 0.5061 | 0.4941 |
+| id_crc | A0 | No | **0.9987** | 0.9464 | 0.9985 | 0.9992 |
+| id_crc | A1 | Yes | **0.9984** | 0.9353 | 0.9984 | 0.9985 |
+| id_crc CTRL | CTRL | No | 0.5098 | 0.0000 | 0.5078 | 0.5138 |
+| id_crc CTRL | CTRL | Yes | 0.5108 | 0.0000 | 0.5075 | 0.5174 |
+
+Acceptance criterion Uji A adalah **>0.98**. Berdasarkan payload id_crc:
+
+- A0 = **0.9987** → **PASS**
+- A1 = **0.9984** → **PASS**
+
+Control tetap sekitar chance level (sekitar 0.50). Notebook secara eksplisit menyatakan A0 dan A1 memenuhi ambang validasi.
+
+## Ablasi Uji A — Run 30.000 Step
+
+Tiga ablasi juga selesai **30.000/30.000 step**:
+
+| Eksperimen | Parameter | A0 raw | A1 raw | A0 id_crc | A1 id_crc |
+|---|---|---:|---:|---:|---:|
+| abl_lambda_delta0 | LAMBDA_DELTA=0 | 0.9972 | 0.9972 | 0.9952 | 0.9951 |
+| abl_lr3e-4 | LR=3e-4 | 0.9947 | 0.9944 | 0.9959 | 0.9953 |
+| abl_init1e-2 | INIT_STD=0.01 | 0.9972 | 0.9967 | 0.9964 | 0.9965 |
+
+Tidak ada hasil pada tabel ini yang dijadikan pengganti gate utama; tabel hanya mencatat hasil ablasi yang benar-benar tersedia di notebook.
+
+## Status Stage 1 Setelah Run Terbaru
+
+| Requirement | Target | Bukti terbaru | Status |
+|---|---:|---|---|
+| Uji A0 | >0.98 | 0.9987 (id_crc) | **PASS** |
+| Uji A1 | >0.98 | 0.9984 (id_crc) | **PASS** |
+| Uji B | >0.95 | 0.5479 pada diagnostic 600-step sebelumnya | **Belum menjadi gate final** |
+| Uji C | dibandingkan dengan B | 0.5008 pada diagnostic 600-step sebelumnya | **Belum menjadi gate final** |
+| 30/30 legible tanpa attack | 30/30 | Belum ada bukti pada notebook terbaru | **Belum diuji** |
+| ≥27/30 HEVC CRF35 alpha 1.0 | ≥27/30 | Belum ada bukti pada notebook terbaru | **Belum diuji** |
+
+Dengan demikian, **Uji A sudah lulus**, tetapi **Stage 1 belum selesai**. Tidak ada bukti pada notebook terbaru yang membenarkan klaim bahwa Uji B, legibility 30/30, atau HEVC CRF35 sudah lulus.
+
+## Next Action Berdasarkan Gate
+
+Karena Uji A sekarang sudah memenuhi target, langkah berikutnya adalah **menjalankan Uji B dengan konfigurasi gate yang sesuai customer** dan mengevaluasi hasilnya terhadap threshold **>0.95**. Setelah itu lanjutkan Uji C dan exit criteria Stage 1 sesuai urutan plan.
+
+**Jangan menulis Stage 1 sebagai PASS dan jangan mengklaim robustness HEVC/AV1 sebelum bukti masing-masing tersedia.**
