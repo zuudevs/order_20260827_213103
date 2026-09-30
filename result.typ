@@ -1,8 +1,11 @@
+#set page(paper: "a4")
+#set text(font: "Times New Roman")
+
 = Laporan Progress Eksperimen Watermark Latent Neural Codec
 
-*Snapshot:* 30 September 2026  
-*Notebook utama:* `watermark_latent_neural_codec_v3_stage1_patch.ipynb`  
-*Notebook blob:* `7c87fb50a26aa84e15b641fc1b7adc896e10cff5`  
+*Snapshot:* 30 September 2026 \
+*Notebook utama:* #link("https://github.com/zuudevs/order_20260827_213103/blob/main/watermark_latent_neural_codec_v3_stage1_patch.ipynb")[`watermark_latent_neural_codec_v3_stage1_patch.ipynb`] \
+*Notebook blob:* `7c87fb50a26aa84e15b641fc1b7adc896e10cff5` \
 *Commit terbaru yang memuat hasil eksperimen:* `36680a5dab2899c899267a1d324b53eeebdd3f22`
 
 == Ringkasan Progress
@@ -22,13 +25,7 @@ Progress di bawah dipisahkan menjadi *progress implementasi*, *progress eksperim
   [*Progress keseluruhan berbasis tahapan*], [8%], [IN PROGRESS], [Formula transparan: Stage 1 terdiri dari 3 diagnostic utama; 1/3 diagnostic sudah dieksekusi = 33%. Dengan 4 stage berbobot sama, 33% / 4 = 8.25%, dibulatkan menjadi 8%.],
 )
 
-#box(
-  inset: 8pt,
-  stroke: 1pt,
-  [
-    *Interpretasi angka 8%:* angka ini bukan nilai keberhasilan model. Ini adalah ukuran progress pekerjaan berbasis tahapan yang konservatif. Implementasi teknis sudah 100% diverifikasi, tetapi gate eksperimen Stage 1 belum lulus sehingga tahap berikutnya tetap diblokir.
-  ],
-)
+*Interpretasi angka 8%:* angka ini bukan nilai keberhasilan model. Ini adalah ukuran progress pekerjaan berbasis tahapan yang konservatif. Implementasi teknis sudah 100% diverifikasi, tetapi gate eksperimen Stage 1 belum lulus sehingga tahap berikutnya tetap diblokir.
 
 == Bukti Verifikasi Implementasi
 
@@ -140,4 +137,6 @@ Karena run terbaru berhenti akibat limit environment, hasil tersebut tidak diper
 
 == Catatan Bukti
 
-Status laporan ini dibatasi pada bukti yang tersedia di repository per 30 September 2026. Hasil yang tidak selesai karena limit runtime tidak diperlakukan sebagai hasil final. Nilai 8% merupakan progress berbasis tahapan yang dihitung eksplisit, sedangkan nilai 100% pada implementasi hanya menunjukkan verification checks implementasi lulus, bukan bahwa model penelitian telah memenuhi seluruh target customer.
+Status laporan ini dibatasi pada bukti yang tersedia di repository per 30 September 2026. Hasil yang tidak selesai karena limit runtime tidak diperlakukan sebagai hasil final. Nilai 8% merupakan progress berbasis tahapan yang dihitung eksplisit, sedangkan nilai 100% pada implementasi hanya menunjukkan verification checks implementasi lulus, bukan bahwa model penelitian telah memenuhi seluruh target.
+
+// next report
