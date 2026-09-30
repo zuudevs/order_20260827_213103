@@ -607,3 +607,84 @@ Current project state:
 | Stage 4 | 0% |
 | Stage 5 | 0% |
 | **Overall** | 8% |
+---
+# Timeline Update — 30 September 2026
+
+## Commit Terbaru
+
+`14134f1707c1e897732f4b65f1475e2cf7b55af1`
+
+Notebook: `watermark_latent_neural_codec_v3_stage1.ipynb`
+
+## Diagnostic Level 2 — COMPLETE
+
+| Mode | Bit Accuracy | Status |
+|---|---:|---|
+| latent_float | 0.530 | COMPLETE |
+| video_no_round | 0.510 | COMPLETE |
+| video_round_ste | 0.545 | COMPLETE |
+
+Semua mode selesai 400/400 step. Hasil belum mendekati target Uji A >0.98.
+
+## Uji A — 6.000 Step — COMPLETE
+
+| Payload | A0 | A1 |
+|---|---:|---:|
+| raw | 0.8605 | 0.8601 |
+| id_crc | **0.8618** | **0.8625** |
+| id_crc CTRL | 0.5011 | 0.5023 |
+
+Target Uji A: **>0.98**.
+
+Hasil `id_crc` meningkat dari hasil sebelumnya A0 `0.6294` menjadi `0.8618` (+0.2324), tetapi gate masih belum terpenuhi.
+
+## Uji B/C Diagnostic — COMPLETE
+
+| Eksperimen | Konfigurasi | Bit Accuracy | Target | Status |
+|---|---|---:|---:|---|
+| Uji A | 16×1 | 0.5390 | >0.98 | FAIL diagnostic |
+| Uji B | 16×1 | 0.5479 | >0.95 | FAIL diagnostic |
+| Uji A (2×8) | 2×8 | 0.4973 | >0.98 | FAIL diagnostic |
+| Uji C | 2×8 | 0.5008 | >0.95 | FAIL diagnostic |
+
+Run ini merupakan diagnostic 600-step dan bukan pengganti gate final Stage 1.
+
+## Ablasi Uji A — COMPLETE
+
+| Eksperimen | Parameter | Evaluasi |
+|---|---|---:|
+| `abl_lambda_delta0` | `lambda_delta=0` | 0.8175 |
+| `abl_lr3e-4` | `LR=3e-4` | 0.8393 |
+| `abl_init1e-2` | init layer akhir ≈ `1e-2` | **0.8595** |
+
+Ketiga run selesai 6.000/6.000 step. Tidak ada varian yang mencapai >0.98.
+
+## Status Setelah Eksperimen Terbaru
+
+| Requirement | Target | Hasil Terbaru | Status |
+|---|---:|---:|---|
+| Uji A0 | >0.98 | 0.8618 | FAIL gate |
+| Uji A1 | >0.98 | 0.8625 | FAIL gate |
+| Uji B | >0.95 | 0.5479* | FAIL diagnostic |
+| Uji C | dibandingkan dengan B | 0.5008* | FAIL diagnostic |
+| Stage 1 Gate | seluruh exit criteria | Belum terpenuhi | BLOCKED |
+
+*Diagnostic 600-step; tidak diperlakukan sebagai final gate evidence.
+
+## Progress
+
+- Implementation verification: **100%**
+- Diagnostic execution: **100%**
+- Stage 1 gate: **0%**
+- Stage 2: **0%**
+- Stage 3: **0%**
+- Stage 4: **0%**
+- Stage 5: **0%**
+
+**Overall progress: 25%**
+
+Angka 25% menunjukkan pekerjaan yang sudah dieksekusi, bukan keberhasilan model.
+
+## Next Step
+
+Tetap fokus pada **Uji A / latent-direct extraction** untuk mencari penyebab ceiling sekitar 0.86. Jangan membuka codec robustness, HEVC, AV1, atau Stage 2 sebelum gate Stage 1 terpenuhi.
