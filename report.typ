@@ -229,8 +229,7 @@ Angka 25% menunjukkan pekerjaan yang sudah dieksekusi, bukan keberhasilan model.
 
 Tetap fokus pada *Uji A / latent-direct extraction* untuk mencari penyebab ceiling sekitar 0.86. Jangan membuka codec robustness, HEVC, AV1, atau Stage 2 sebelum gate Stage 1 terpenuhi.
 
-// NEXT REPORT FOLLOW ABOVE STRUCTURE
-== Timeline Update — 30 September 2026 — Run Terbaru
+== Timeline Update — 30 September 2026
 
 *Sumber bukti:* notebook yang diunggah watermark_latent_neural_codec_v3_stage1_fixed (2).ipynb. Tidak ada commit SHA yang dicantumkan untuk file hasil ini, sehingga tidak diasumsikan berasal dari commit tertentu.
 
@@ -286,7 +285,7 @@ Tiga ablasi selesai *30.000/30.000 step*.
 
 Hasil ablasi di atas dicatat sebagai bukti eksperimen dan tidak digunakan untuk menggantikan gate utama.
 
-=== Status Stage 1 Setelah Run Terbaru
+=== Status Stage 1
 
 #table(
   columns: 4,
@@ -307,3 +306,5 @@ Dengan demikian, *Uji A sudah lulus*, tetapi *Stage 1 belum selesai*. Tidak ada 
 Karena Uji A sekarang sudah memenuhi target, langkah berikutnya adalah menjalankan *Uji B* dengan konfigurasi gate sesuai customer dan mengevaluasinya terhadap threshold *>0.95*. Setelah itu lanjutkan Uji C dan exit criteria Stage 1 sesuai urutan plan.
 
 Jangan menulis Stage 1 sebagai PASS dan jangan mengklaim robustness HEVC/AV1 sebelum bukti masing-masing tersedia.
+
+// NEXT REPORT FOLLOW ABOVE STRUCTURE
