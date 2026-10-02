@@ -1,0 +1,40 @@
+---
+title: Customer Requirement
+---
+graph TD
+    A["Payload: sabila"] --> B["ASCII / Binary Encoding"]
+    B --> C["48-bit payload"]
+    C --> D["ECC Repetition x3"]
+    D --> E["144-bit watermark"]
+
+    F["Video asli"] --> G["Ekstraksi frame"]
+    G --> H["Frame 128x128"]
+
+    E --> I["Neural Watermark Encoder"]
+    H --> I
+
+    I --> J["Residual watermark"]
+    H --> K["Frame + residual"]
+    J --> K
+
+    K --> L["Watermarked Video"]
+
+	subgraph Compression Model
+	subgraph Optional
+    L --> M["H.264 CRF 35"]
+    L --> N["H.265 CRF 35"]
+	end
+    L --> O["Neural Codec"]
+	end
+
+    M --> P["Watermarked/Compressed Frame"]
+    N --> P
+    O --> P
+
+    P --> Q["Neural Watermark Decoder"]
+    Q --> R["144 extracted bits"]
+    R --> S["ECC Majority Vote"]
+    S --> T["48-bit payload"]
+    T --> U["ASCII decoding"]
+    U --> V["sabila"]
+    V --> W["Compare with ground truth"]

@@ -1,0 +1,20 @@
+---
+title: Flow yang ku tangkap.
+---
+graph TD
+	Payload["Payload 48 bit / 6 byte #34;sabila#34;"] --> CvtBinaryCode["01110011 01100001 01100010 01101001 01101100 01100001"]
+
+	subgraph "Encode to Pixel"
+	CvtBinaryCode --> Embedding["Di Representasikan ke pixel (Embedding)"]
+	end
+
+	Embedding --> InsertToVideo["Di Insert ke Video"]
+	InsertToVideo --> Compression["Kompres dengan <strong><code>neural codec</code></strong> (main goal)\noptional: h264, h265"]
+	Compression --> ExtractWatermark["Extract watermark bytes"]
+
+	subgraph "Decode To Ascii"
+	ExtractWatermark --> DecodeToAscii["sekumpulan byte pixel di decode ke <strong>ASCII</strong>"]
+	end
+
+	DecodeToAscii --> EvaluatePayload["apakah ascii dari watermark yang diekstrak sama seperti payload?"]
+	EvaluatePayload --> Report["Laporkan hasil"]

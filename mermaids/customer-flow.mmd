@@ -1,0 +1,19 @@
+---
+title: Customer Requirement
+---
+graph TD
+	Payload["Payload 48 bit / 6 byte #34;sabila#34;"] --> CvtBinaryCode["01110011 01100001 01100010 01101001 01101100 01100001"]
+
+	subgraph "Encode to Pixel"
+	CvtBinaryCode --> Embedding["Di Representasikan ke pixel (Embedding)"]
+	end
+
+	Embedding --> InsertToVideo["Di Insert ke Video"]
+	InsertToVideo --> Compression["Kompres dengan <strong><code>neural codec</code></strong> (main goal)\noptional: h264, h265"]
+	Compression --> ExtractBinaryCode["Extract binary code dengan panjang 48 bit / 6 byte dari frame"]
+	
+	subgraph "Extract To Ascii"
+	ExtractBinaryCode --> EvaluatePayload["apakah ascii dari watermark yang diekstrak sama seperti payload?"]
+	end
+
+	EvaluatePayload --> Report["Laporkan hasil"]

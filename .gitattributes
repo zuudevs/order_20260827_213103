@@ -1,0 +1,7 @@
+text=auto
+*.mmd text
+*.md text
+*.png binary
+*.svg text
+*.ipynb text
+*.json text
