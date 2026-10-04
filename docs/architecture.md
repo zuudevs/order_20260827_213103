@@ -4,24 +4,16 @@
 
 Implementasi terbaru mengikuti requirement customer/dosen:
 
-```text
-"sabila"
-  ↓
-48-bit binary payload
-  ↓
-pixel-domain watermark embedding
-  ↓
-watermarked frame/video
-  ↓
-Neural Codec
-  ↓
-reconstructed pixel
-  ↓
-pixel-domain watermark extraction
-  ↓
-48-bit payload
-  ↓
-BER + Bit Accuracy + Detection
+```mermaid
+flowchart TD
+	A["sabila"] --> B["48-bit binary payload"]
+	B --> C["pixel-domain watermark embedding"]
+	C --> D["watermarked frame/video"]
+	D --> E["Neural Codec"]
+	E --> F["reconstructed pixel"]
+	F --> G["pixel-domain watermark extraction"]
+	G --> H["48-bit payload"]
+	H -- I["BER + Bit Accuracy + Detection"]
 ```
 
 Watermark **tidak** ditanam pada latent Neural Codec. Neural Codec hanya digunakan untuk menguji ketahanan watermark yang sudah disisipkan pada domain pixel.
@@ -102,18 +94,13 @@ Checkpoint tidak boleh dianggap sebagai hasil eksperimen final. Hasil final teta
 
 ### Prinsip resume
 
-```text
-start
-  ↓
-load shared config
-  ↓
-load checkpoint jika tersedia
-  ↓
-resume dari unit kerja terakhir yang belum selesai
-  ↓
-save checkpoint berkala
-  ↓
-save final metrics
+```mermaid
+flowchart TD
+	A["start"] --> B["load shared config"]
+	B --> C["load checkpoint jika tersedia"]
+	C --> D["resume dari unit kerja terakhir yang belum selesai"]
+	D --> E["save checkpoint berkala"]
+	E --> F["save final metrics"]
 ```
 
 Jika checkpoint korup/tidak kompatibel, notebook harus gagal secara jelas atau memulai run baru dengan nama run berbeda; jangan diam-diam mencampur state lama dan baru.
