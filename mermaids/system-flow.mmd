@@ -1,40 +1,42 @@
 ---
-title: Customer Requirement
+title: Pixel Watermark + Neural Codec
 ---
 graph TD
-    A["Payload: sabila"] --> B["ASCII / Binary Encoding"]
+    A["Payload teks: sabila"] --> B["Konversi byte 8-bit"]
     B --> C["48-bit payload"]
-    C --> D["ECC Repetition x3"]
-    D --> E["144-bit watermark"]
 
-    F["Video asli"] --> G["Ekstraksi frame"]
-    G --> H["Frame 128x128"]
+    D["Frame video asli"] --> E["Ekstraksi frame"]
+    E --> F["Frame pixel"]
 
-    E --> I["Neural Watermark Encoder"]
-    H --> I
+    C --> G["Generate / gunakan pseudo-random pattern"]
+    F --> H["Pixel-domain embedding"]
+    G --> H
+    H --> I["Watermarked Frame"]
 
-    I --> J["Residual watermark"]
-    H --> K["Frame + residual"]
-    J --> K
+    I --> J["Neural Codec: compress()"]
+    J --> K["Compressed / Latent Representation"]
+    K --> L["Neural Codec: decompress()"]
+    L --> M["Reconstructed Frame"]
 
-    K --> L["Watermarked Video"]
+    M --> N["Ambil pixel/block watermark"]
+    G --> N
+    F --> N
+    N --> O["Correlation / Dot Product"]
+    O --> P{"Correlation sesuai bit?"}
+    P -->|Ya| Q["Bit = 1"]
+    P -->|Tidak| R["Bit = 0"]
 
-	subgraph Compression Model
-	subgraph Optional
-    L --> M["H.264 CRF 35"]
-    L --> N["H.265 CRF 35"]
-	end
-    L --> O["Neural Codec"]
-	end
+    Q --> S["48-bit hasil extraction"]
+    R --> S
+    S --> T["Bandingkan dengan payload asli"]
 
-    M --> P["Watermarked/Compressed Frame"]
-    N --> P
-    O --> P
+    T --> U["BER"]
+    T --> V["Bit Accuracy"]
+    T --> W["Status Detection"]
+    T --> X["Decoded text: sabila"]
 
-    P --> Q["Neural Watermark Decoder"]
-    Q --> R["144 extracted bits"]
-    R --> S["ECC Majority Vote"]
-    S --> T["48-bit payload"]
-    T --> U["ASCII decoding"]
-    U --> V["sabila"]
-    V --> W["Compare with ground truth"]
+    F --> Y["Pixel difference / PSNR"]
+    I --> Y
+
+    Z["Frame/video tanpa watermark"] --> AA["False Positive Test"]
+    AA --> W
