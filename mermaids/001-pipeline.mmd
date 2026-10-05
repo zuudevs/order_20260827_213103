@@ -1,0 +1,11 @@
+flowchart TD
+	A["Video"] --> B["Frame extraction"]
+	B --> C["Payload &#34;sabila&#34; = 48 bit"]
+	C --> D["Pixel-domain watermark embedding"]
+	D --> E["Watermarked frame"]
+	E --> F["Neural Codec: bmshj2018-hyperprior, quality=3"]
+	F --> G["Compressed representation"]
+	G --> H["Neural Codec decompression"]
+	H --> I["Reconstructed frame"]
+	I --> J["Pixel-domain watermark extraction"]
+	J --> K["BER / Bit Accuracy / Detection / PSNR / BPP"]
