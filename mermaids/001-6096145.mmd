@@ -1,0 +1,10 @@
+flowchart TD
+	A["Payload #34;sabila#34;"] --> B["48-bit payload"]
+	B --> C["Pixel-domain embedding"]
+	C --> D["Watermarked frame"]
+	D --> E["Neural Codec compress()"]
+	E --> F["Compressed representation"]
+	F --> G["Neural Codec decompress()"]
+	G --> H["Reconstructed frame"]
+	H --> I["Pixel-domain extraction"]
+	I --> J["Detection / BER / Bit Accuracy"]

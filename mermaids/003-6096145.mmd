@@ -1,0 +1,8 @@
+flowchart TD
+	A["Block"] --> B["Bit payload"]
+	B --> C["Koordinat block"]
+	C --> D["Pixel sebelum embedding"]
+	D --> E["Pixel setelah embedding"]
+	E --> F["Delta pixel"]
+	F --> G["Correlation score"]
+	G --> H["Decoded bit"]

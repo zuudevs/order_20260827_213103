@@ -1,0 +1,5 @@
+flowchart LR
+	A["codec.compress()"] --> B["strings + shape"]
+	B --> C["codec.decompress()"]
+	C --> D["x_hat"]
+	D --> E["reconstructed frame"]

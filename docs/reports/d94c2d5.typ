@@ -3,7 +3,6 @@
 == Implementasi Pixel-Domain Watermark dan Pengujian Robustness terhadap Neural Codec
 
 *Snapshot*: 2026-10-04 11:45:20 UTC
-
 *Notebook*: #link("https://github.com/zuudevs/order_20260827_213103/blob/refactor/pixel-watermark-neural-codec/src/main.ipynb")[src/main.ipynb - refactor/pixel-watermark-neural-codec]
 
 === Ringkasan Singkat

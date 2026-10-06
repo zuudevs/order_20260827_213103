@@ -1,0 +1,6 @@
+flowchart LR
+	A["Watermarked frame"] --> B["Neural Codec compression"]
+	B --> C["Compressed representation"]
+	C --> D["Neural Codec decompression"]
+	D --> E["Reconstructed frame"]
+	E --> F["Watermark extraction"]
